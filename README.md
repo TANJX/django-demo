@@ -1,5 +1,5 @@
 # Run
-
+`python manage.py runserver`
 
 # How to make migration
 - Change your models (in models.py).
