@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ question.question_text }} | Poll</title>
+  <style>
+    * {
+      font-family: "Roboto", sans-serif;
+    }
+
+    body {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: chocolate;
+      border-bottom: 1px solid chocolate;
+    }
+
+    a, a:visited, a:focus {
+      font-size: 1.2rem;
+      color: teal;
+    }
+  </style>
+</head>
+<body>
+<h1>Poll: {{ question.question_text }} </h1>
+<p>Date: {{ question.pub_date }}</p>
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }}</li>
+{% endfor %}
+</ul>
+<a href="{% url 'polls:index' %}">Back</a>
+</body>
+</html>
