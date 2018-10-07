@@ -47,47 +47,17 @@
 <h1 class="mdc-typography--headline1">Poll</h1>
 <h2 class="mdc-typography--headline3">{{ question.question_text }}</h2>
 <p>{{ question.pub_date }}</p>
-{% if error_message %}
-  <p><strong>{{ error_message }}</strong></p>
-{% endif %}
 
-<form action="{% url 'polls:vote' question.id %}" method="POST">
-  {% csrf_token %}
+<ul>
   {% for choice in question.choice_set.all %}
-    <div>
-      <div class="mdc-form-field">
-        <div class="mdc-radio">
-          <input class="mdc-radio__native-control" type="radio" name="choice"
-                 id="choice-{{ forloop.counter }}" value="{{ choice.id }}">
-          <div class="mdc-radio__background">
-            <div class="mdc-radio__outer-circle"></div>
-            <div class="mdc-radio__inner-circle"></div>
-          </div>
-        </div>
-        <label for="choice-{{ forloop.counter }}">{{ choice.choice_text }}</label>
-      </div>
-    </div>
+    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
   {% endfor %}
-  <div class="buttons">
-    <button class="mdc-button mdc-button--raised" type="submit">Vote</button>
-    <button class="mdc-button mdc-button--outlined" type="button" onclick="location.href={% url 'polls:index' %}">Back</button>
-  </div>
-</form>
+</ul>
+
+<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
 
 
 <script>
-    $('.mdc-form-field').each(function () {
-        var formField = new mdc.formField.MDCFormField($(this)[0]);
-        var e = $(this).children(".mdc-checkbox");
-        if (typeof e[0] !== "undefined") {
-            formField.input = new mdc.checkbox.MDCCheckbox(e[0]);
-        } else {
-            e = $(this).children(".mdc-radio");
-            if (typeof e[0] !== "undefined") {
-                formField.input = new mdc.radio.MDCRadio(e[0]);
-            }
-        }
-    });
     $('button').each(function () {
         mdc.ripple.MDCRipple.attachTo($(this)[0]);
     })
