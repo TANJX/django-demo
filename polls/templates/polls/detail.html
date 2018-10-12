@@ -1,96 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ question.question_text }} | Poll</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
-  <style>
-    * {
-      font-family: "Roboto", sans-serif;
-    }
+{% extends "polls/base.html" %}
+{% block title %}{{ question.question_text }} | Poll{% endblock %}
+{% block content %}
+  <h2 class="mdc-typography--headline3">{{ question.question_text }}</h2>
+  <p>{{ question.pub_date }}</p>
+  {% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+  {% endif %}
 
-    body {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 0 25px;
-    }
-
-    h1 {
-      color: chocolate;
-    }
-
-    a, a:visited, a:focus {
-      font-size: 1.2rem;
-      color: teal;
-    }
-
-    form {
-      margin: 25px 0;
-    }
-
-    .buttons {
-      margin-top: 15px;
-    }
-
-    @media (max-width: 800px) {
-      .mdc-typography--headline1 {
-        font-size: 4rem;
-      }
-    }
-  </style>
-  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-</head>
-<body>
-<h1 class="mdc-typography--headline1">Poll</h1>
-<h2 class="mdc-typography--headline3">{{ question.question_text }}</h2>
-<p>{{ question.pub_date }}</p>
-{% if error_message %}
-  <p><strong>{{ error_message }}</strong></p>
-{% endif %}
-
-<form action="{% url 'polls:vote' question.id %}" method="POST">
-  {% csrf_token %}
-  {% for choice in question.choice_set.all %}
-    <div>
-      <div class="mdc-form-field">
-        <div class="mdc-radio">
-          <input class="mdc-radio__native-control" type="radio" name="choice"
-                 id="choice-{{ forloop.counter }}" value="{{ choice.id }}">
-          <div class="mdc-radio__background">
-            <div class="mdc-radio__outer-circle"></div>
-            <div class="mdc-radio__inner-circle"></div>
+  <form action="{% url 'polls:vote' question.id %}" method="POST">
+    {% csrf_token %}
+    {% for choice in question.choice_set.all %}
+      <div>
+        <div class="mdc-form-field">
+          <div class="mdc-radio">
+            <input class="mdc-radio__native-control" type="radio" name="choice"
+                   id="choice-{{ forloop.counter }}" value="{{ choice.id }}">
+            <div class="mdc-radio__background">
+              <div class="mdc-radio__outer-circle"></div>
+              <div class="mdc-radio__inner-circle"></div>
+            </div>
           </div>
+          <label for="choice-{{ forloop.counter }}">{{ choice.choice_text }}</label>
         </div>
-        <label for="choice-{{ forloop.counter }}">{{ choice.choice_text }}</label>
       </div>
+    {% endfor %}
+    <div class="buttons">
+      <button class="mdc-button mdc-button--raised" type="submit">Vote</button>
+      <button class="mdc-button mdc-button--outlined" type="button" onclick="location.href={% url 'polls:index' %}">
+        Back
+      </button>
     </div>
-  {% endfor %}
-  <div class="buttons">
-    <button class="mdc-button mdc-button--raised" type="submit">Vote</button>
-    <button class="mdc-button mdc-button--outlined" type="button" onclick="location.href={% url 'polls:index' %}">Back</button>
-  </div>
-</form>
+  </form>
+{% endblock %}
 
 
-<script>
-    $('.mdc-form-field').each(function () {
-        var formField = new mdc.formField.MDCFormField($(this)[0]);
-        var e = $(this).children(".mdc-checkbox");
-        if (typeof e[0] !== "undefined") {
-            formField.input = new mdc.checkbox.MDCCheckbox(e[0]);
-        } else {
-            e = $(this).children(".mdc-radio");
-            if (typeof e[0] !== "undefined") {
-                formField.input = new mdc.radio.MDCRadio(e[0]);
-            }
-        }
-    });
-    $('button').each(function () {
-        mdc.ripple.MDCRipple.attachTo($(this)[0]);
-    })
-</script>
-</body>
-</html>

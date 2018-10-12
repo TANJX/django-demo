@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Polls | Mars Inc.{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="{% static 'polls/index.css' %}">
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+</head>
+<body class="mdc-typography">
+<div class="header">
+  <div class="container">
+    <p>Mars Polls</p>
+  </div>
+</div>
+<div class="container">
+
+  {% block content %}
+  {% endblock %}
+</div>
+<script>
+    $('.ripple').each(function () {
+        mdc.ripple.MDCRipple.attachTo($(this)[0]);
+    });
+    $('button').each(function () {
+        mdc.ripple.MDCRipple.attachTo($(this)[0]);
+    });
+    $('.mdc-form-field').each(function () {
+        var formField = new mdc.formField.MDCFormField($(this)[0]);
+        var e = $(this).children(".mdc-checkbox");
+        if (typeof e[0] !== "undefined") {
+            formField.input = new mdc.checkbox.MDCCheckbox(e[0]);
+        } else {
+            e = $(this).children(".mdc-radio");
+            if (typeof e[0] !== "undefined") {
+                formField.input = new mdc.radio.MDCRadio(e[0]);
+            }
+        }
+    });
+    var listEle = document.getElementById('polls-list');
+    var list = new mdc.list.MDCList(listEle);
+    list.singleSelection = true;
+</script>
+</body>
+</html>

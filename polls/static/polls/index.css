@@ -1,0 +1,54 @@
+* {
+  font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.header {
+  height: 50px;
+  background-color: #00dbdb;
+  color: white;
+}
+
+.header p {
+  margin: 0;
+  font-size: 1.5rem;
+  padding-top: 12px;
+  font-weight: lighter;
+}
+
+h1 {
+  color: #3c807c;
+}
+
+a, a:visited, a:focus {
+  font-size: 1.2rem;
+  color: teal;
+}
+
+@media (max-width: 800px) {
+  .mdc-typography--headline1 {
+    font-size: 4rem;
+  }
+}
+
+form {
+  margin: 25px 0;
+}
+
+    .buttons {
+      margin-top: 15px;
+    }
+
+:root {
+  --mdc-theme-primary: #00caca;
+  --mdc-theme-secondary: #3c807c;
+}

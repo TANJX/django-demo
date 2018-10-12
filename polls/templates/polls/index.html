@@ -1,63 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Polls | Mars Inc.</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
-  <style>
-    * {
-      font-family: "Roboto", sans-serif;
-    }
+{% extends "polls/base.html" %}
 
-    body {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    h1 {
-      color: chocolate;
-    }
-
-    a, a:visited, a:focus {
-      font-size: 1.2rem;
-      color: teal;
-    }
-
-    @media (max-width: 800px) {
-      .mdc-typography--headline1 {
-        font-size: 4rem;
-      }
-    }
-  </style>
-  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-</head>
-<body class="mdc-typography">
-<h1 class="mdc-typography--headline1">{{ title }} </h1>
-{% if latest_question_list %}
-  <ul id="polls-list" class="mdc-list mdc-list--two-line" aria-orientation="vertical">
-    {% for question in latest_question_list %}
-      <li class="mdc-list-item ripple" onclick='location.href="{% url 'polls:detail' question.id %}"'>
+{% block content %}
+  <h1>Poll list</h1>
+  {% if latest_question_list %}
+    <ul id="polls-list" class="mdc-list mdc-list--two-line" aria-orientation="vertical">
+      {% for question in latest_question_list %}
+        <li class="mdc-list-item ripple" onclick='location.href="{% url 'polls:detail' question.id %}"'>
         <span class="mdc-list-item__text">
           <span class="mdc-list-item__primary-text">{{ question.question_text }}</span>
           <span class="mdc-list-item__secondary-text">{{ question.pub_date }}</span>
         </span>
-      </li>
-    {% endfor %}
+        </li>
+      {% endfor %}
 
-  </ul>
-{% else %}
-  <p>No polls are available.</p>
-{% endif %}
-<script>
-    $('.ripple').each(function () {
-        mdc.ripple.MDCRipple.attachTo($(this)[0]);
-    });
-    var listEle = document.getElementById('polls-list');
-    var list = new mdc.list.MDCList(listEle);
-    list.singleSelection = true;
-</script>
-</body>
-</html>
+    </ul>
+  {% else %}
+    <p>No polls are available.</p>
+  {% endif %}
+{% endblock %}
